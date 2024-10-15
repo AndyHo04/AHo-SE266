@@ -10,12 +10,21 @@ include 'savings.php';
     $checking = new CheckingAccount('C123', $checkingBalance, '12-20-2019');
     $savings = new SavingsAccount('S123', $savingsBalance, '03-20-2020');
 
+    $errorChecking = '';
+    $errorSavings = '';
+
     if (isset($_POST['withdrawChecking'])) {
-        $checking->withdrawal($_POST['checkingWithdrawAmount']);
+        $result = $checking->withdrawal($_POST['checkingWithdrawAmount']);
+        if ($result !== true) {
+            $errorChecking = $result;
+        }
     } elseif (isset($_POST['depositChecking'])) {
         $checking->deposit($_POST['checkingDepositAmount']);
     } elseif (isset($_POST['withdrawSavings'])) {
-        $savings->withdrawal($_POST['savingsWithdrawAmount']);
+        $resultSavings = $savings->withdrawal($_POST['savingsWithdrawAmount']);
+        if ($resultSavings !== true) {
+            $errorSavings = $resultSavings;
+        }
     } elseif (isset($_POST['depositSavings'])) {
         $savings->deposit($_POST['savingsDepositAmount']);
     }
@@ -93,6 +102,9 @@ include 'savings.php';
                     <input type="text" name="checkingDepositAmount" value="" />
                     <input type="submit" name="depositChecking" value="Deposit" /><br />
                 </div>
+                <?php if ($errorChecking): ?>
+                    <div class="error"><?= htmlspecialchars($errorChecking); ?></div>
+                <?php endif; ?>
             </div>
 
             <div class="account">
@@ -113,6 +125,9 @@ include 'savings.php';
                     <input type="text" name="savingsDepositAmount" value="" />
                     <input type="submit" name="depositSavings" value="Deposit" /><br />
                 </div>
+                <?php if ($errorSavings): ?>
+                <div class="error"><?= htmlspecialchars($errorSavings); ?></div>
+                <?php endif; ?>
             </div>
         </div>
         <?php 

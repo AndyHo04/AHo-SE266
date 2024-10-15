@@ -13,7 +13,7 @@ class CheckingAccount extends Account
 			$this -> balance -= $amount;
 			return true;
 		} else {
-			return false;
+			return "Withdrawal amount exceeds the overdraft limit.";
 		}
 	} // end withdrawal
 

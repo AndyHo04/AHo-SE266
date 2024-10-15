@@ -12,7 +12,7 @@ class SavingsAccount extends Account
 			$this -> balance -= $amount;
 			return true;
 		} else {
-			return false;
+			return "Cannot withdraw into the negatives.";
 		}
 	} //end withdrawal
 
