@@ -202,8 +202,8 @@
     <p style="color: red;"><?= $error; ?></p>
     <?php endif; ?>
     
-    <?php
-    include '../include/footer.php';
+    <?php 
+    include "../include/footer.php";
     ?>
 </body>
 </html>
