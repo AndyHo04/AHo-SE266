@@ -7,7 +7,7 @@ function getAllPatients(){
 
     $results = [];
 
-    $stmt = $db->prepare("SELECT * FROM patients ORDER BY patientLastName, patientFirstName");
+    $stmt = $db->prepare("SELECT * FROM patients");
 
     if($stmt->execute() && $stmt->rowCount() > 0){
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
