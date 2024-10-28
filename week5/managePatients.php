@@ -26,10 +26,6 @@
     </style>
 </head>
 <body>
-    <h1>Patient Intake Form</h1>
-    <a href = "viewPatients.php">Back to View All Patients</a>
-    <h2> Add New Patient</h2>
-
     <?php  
     include "functions_patients.php";
 
@@ -39,30 +35,50 @@
     $marriageStatus = "";
     $dob = "";
     $error = "";
+    
+    if (isset($_GET['Action'])) {
+        $action = filter_input(INPUT_GET, 'Action');
+        $id = filter_input(INPUT_GET, 'ID');
 
-    // Check if the form is submitted and if the patient can be added to the database
-    if (isset($_POST['storePatient'])) {
+        $patient = getPatient($id);
+
+        if ($patient) {
+            $firstName = $patient['patientFirstName'];
+            $lastName = $patient['patientLastName'];
+            $marriageStatus = $patient['patientMarried'];
+            $dob = $patient['patientBirthDate'];
+        }
+
+    }
+
+    if (isset($_POST['first_name'])) {
         $firstName = filter_input(INPUT_POST, 'first_name');
         $lastName = filter_input(INPUT_POST, 'last_name');
         $marriageStatus = filter_input(INPUT_POST, 'marriage_status');
         $dob = filter_input(INPUT_POST, 'dob');
 
-        // Check if the first name is empty
         if ($firstName == "") $error .= "<li>Please provide first name</li>";
-        // Check if the last name is empty
         if ($lastName == "") $error .= "<li>Please provide last name</li>";
-        // Check if the marriage status is empty
         if ($marriageStatus == "") $error .= "<li>Please provide marriage status</li>";
-        // Check if the date of birth is empty
         if ($dob == "") $error .= "<li>Please provide date of birth</li>";
-        // Check if the date of birth is valid
         if (!isDate($dob)) $error .= "<li>Please provide a valid date of birth</li>";
 
-        // If there are no errors, add the patient to the database
         if ($error == "") {
-            addPatient($firstName, $lastName, $marriageStatus, $dob);
-            header('Location: viewPatients.php');
-            exit();
+            if (isset($_POST['storePatient'])) {
+                addPatient($firstName, $lastName, $marriageStatus, $dob);
+                header('Location: viewPatients.php');
+                exit();
+            }
+            else if (isset($_POST['editPatient'])) {
+                updatePatient($id, $firstName, $lastName, $marriageStatus, $dob);
+                header('Location: viewPatients.php');
+                exit();
+            }
+            else if (isset($_POST['deletePatient'])) {
+                deletePatient($id);
+                header('Location: viewPatients.php');
+                exit();
+            }
         }
     }
 
@@ -79,7 +95,9 @@
         return false;
     }
     ?>
-
+    <h1>Patient Intake Form</h1>
+    <a href = "viewPatients.php">Back to View All Patients</a>
+    <h2> <?= $action; ?> Patient</h2>
     <div class="container">
         <div class="col-sm-12">
             <form name="patients" method="post" class="form">
@@ -134,14 +152,23 @@
                     <div>
                     &nbsp;
                     </div>
+                    <?php if ($action == "Add"): ?>
                     <div>
                         <input class="btn btn-success" type="submit" name="storePatient" value="Add Patient Information" />
                     </div> 
+                    <?php elseif ($action == "Edit"): ?>
+                    <div>
+                        <input class="btn btn-warning" type="submit" name="editPatient" value="Edit Patient Information" />
+                    </div>
+                    <br/>
+                    <div>
+                        <input class="btn btn-danger" type="submit" name="deletePatient" value="Delete Patient" />
+                    </div>
                 </div>
             </form>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <?php endif; ?>
     <?php 
     include "../include/footer.php";
     ?>
