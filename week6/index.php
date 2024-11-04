@@ -1,8 +1,6 @@
-<?php include __DIR__ . '/../include/header.php'; ?>
+<?php include __DIR__ . 'include/header.php'; 
     
-<h1>Assignment 6</h1>
-<p>
-    Place holder for assignment 6.
-</p>
+header('Location: login.php');
+exit();
 
-<?php include __DIR__ . '/../include/footer.php'; ?>
+include __DIR__ . 'include/footer.php'; 
