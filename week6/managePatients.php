@@ -66,17 +66,17 @@
         if ($error == "") {
             if (isset($_POST['storePatient'])) {
                 addPatient($firstName, $lastName, $marriageStatus, $dob);
-                header('Location: viewPatients.php');
+                header('Location: Search.php');
                 exit();
             }
             else if (isset($_POST['editPatient'])) {
                 updatePatient($id, $firstName, $lastName, $marriageStatus, $dob);
-                header('Location: viewPatients.php');
+                header('Location: Search.php');
                 exit();
             }
             else if (isset($_POST['deletePatient'])) {
                 deletePatient($id);
-                header('Location: viewPatients.php');
+                header('Location: Search.php');
                 exit();
             }
         }
@@ -96,7 +96,7 @@
     }
     ?>
     <h1>Patient Intake Form</h1>
-    <a href = "viewPatients.php">Back to View All Patients</a>
+    <a href = "Search.php">Back to View All Patients</a>
     <h2> <?= $action; ?> Patient</h2>
     <div class="container">
         <div class="col-sm-12">

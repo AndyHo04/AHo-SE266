@@ -111,7 +111,6 @@
                         </tbody>
                     </table>
             
-                    <a href="managePatients.php">Add New Patient</a>
             
                 </div>
             </div>
